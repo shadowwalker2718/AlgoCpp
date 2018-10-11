@@ -214,5 +214,74 @@ https://segmentfault.com/a/1190000003819277
 http://www.1point3acres.com/bbs/thread-311212-1-1.html
 
 
+## Cows and Folders
+
+There are some cows who wish to collaborate on a folder heirarchy. This folder hierachy is very similar to directory structure found on your computer and contains two types of folders:
+
+- shared folders  
+- confidential folders
+
+Each folder can have at most one parent folder. It is guaranteed that this folder hierachy contains on cycles.
+
+Each folder regardless of type, has a list of cows which are explicit members of that folder. Explicit members always have access to a folder. However, there maybe some additional cows who have access to a folder due to inheritance. More specifically:
+
+- the cows that can access a shared folder are the ones that are explicit members of said shared folder as well as the cows that can access the parent folder(if the parent folder exists). Note that this definition is recursive.  
+- the cows that can access a confidential folder are only the ones that are explicit members of said confidential folder. The cows that have access to the parent folder but are not explicit members of the confidential folder cannot access the confidential folder.
+
+A folder is called a leaf if it is not the parent of any other folder. A cow is called uncool if there is at least one leaf which they cannot access.
+Determine which cows are uncool. Please read the output format section carefully, as any difference can lead to a wrong verdict.
+
+Input format:
+- the first line contains a positive integer Q, denoting the number of cows. The cows are labelled from 0 to Q-1.
+- the second line contains two space separated nonnegative integers, M and N, where M is the number of shared folders and N is the number of confidential folders.
+- The next M lines contain space separated numbers. The first number is the folder id of the `shared` folder. The second number K is howo many cows have explicit access to the shared folder. The next K numbers on the line are the ids of the cows that have explicit access to this shared folder.
+- The next N lines contain space separated numbers. The first number is the folder id of the `confidential` folder. The second number K is howo many cows have explicit access to the `confidential` folder. The next K numbers on the line are the ids of the cows that have explicit access to this `confidential` folder.
+- The next line contains a single nonnegative integer G
+- The remaining G lines contain two space separated integers, U and V, where folder U is the parent folder of folder V
+
+Output format
+
+Print a space separated sorted list of numbers that correspond to the ids of the cows that don't have access to the leaves of the folder hierachy on its own line. Note that this must be your only output, the preseence of any other output could lead to a wrong answer(ie.e any debugging outputs).
+
+Constraints:  
+- Q is between 0 and 50
+- M and N are between 0 and 50
+- The shared folder IDs are between 0 and 10,000. No two shared folders or confidential folders share an ID.
+
+Sample input:
+
+```
+3
+2 1
+1 1 0
+2 1 1
+3 3 0 1 2
+2
+1 2
+1 3
+```
+
+Sample output:  
+```
+2
+```
+
+Sample explanation:
+
+In this case, we have cows with ids 0, 1 and 2.
+
+The folder hierarchy is shown below. SF stands for shared foldeer. CF stands for confidential folder.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
