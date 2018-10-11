@@ -221,9 +221,9 @@ There are some cows who wish to collaborate on a folder heirarchy. This folder h
 - shared folders  
 - confidential folders
 
-Each folder can have at most one parent folder. It is guaranteed that this folder hierachy contains on cycles.
+Each folder can have at most one parent folder. It is guaranteed that this folder hierachy contains no cycles.
 
-Each folder regardless of type, has a list of cows which are explicit members of that folder. Explicit members always have access to a folder. However, there maybe some additional cows who have access to a folder due to inheritance. More specifically:
+Each folder, regardless of type, has a list of cows which are explicit members of that folder. Explicit members always have access to a folder. However, there maybe some additional cows who have access to a folder due to inheritance. More specifically:
 
 - the cows that can access a shared folder are the ones that are explicit members of said shared folder as well as the cows that can access the parent folder(if the parent folder exists). Note that this definition is recursive.  
 - the cows that can access a confidential folder are only the ones that are explicit members of said confidential folder. The cows that have access to the parent folder but are not explicit members of the confidential folder cannot access the confidential folder.
@@ -232,11 +232,12 @@ A folder is called a leaf if it is not the parent of any other folder. A cow is 
 Determine which cows are uncool. Please read the output format section carefully, as any difference can lead to a wrong verdict.
 
 Input format:
-- the first line contains a positive integer Q, denoting the number of cows. The cows are labelled from 0 to Q-1.
-- the second line contains two space separated nonnegative integers, M and N, where M is the number of shared folders and N is the number of confidential folders.
-- The next M lines contain space separated numbers. The first number is the folder id of the `shared` folder. The second number K is howo many cows have explicit access to the shared folder. The next K numbers on the line are the ids of the cows that have explicit access to this shared folder.
-- The next N lines contain space separated numbers. The first number is the folder id of the `confidential` folder. The second number K is howo many cows have explicit access to the `confidential` folder. The next K numbers on the line are the ids of the cows that have explicit access to this `confidential` folder.
-- The next line contains a single nonnegative integer G
+
+- the first line contains a positive integer Q, denoting the number of cows. The cows are labelled from 0 to Q-1.  
+- the second line contains two space separated nonnegative integers, M and N, where M is the number of shared folders and N is the number of confidential folders.  
+- The next M lines contain space separated numbers. The first number is the folder id of the `shared` folder. The second number K is how many cows have explicit access to the shared folder. The next K numbers on the line are the ids of the cows that have explicit access to this shared folder.  
+- The next N lines contain space separated numbers. The first number is the folder id of the `confidential` folder. The second number K is how many cows have explicit access to the `confidential` folder. The next K numbers on the line are the ids of the cows that have explicit access to this `confidential` folder.  
+- The next line contains a single nonnegative integer G  
 - The remaining G lines contain two space separated integers, U and V, where folder U is the parent folder of folder V
 
 Output format
@@ -244,6 +245,7 @@ Output format
 Print a space separated sorted list of numbers that correspond to the ids of the cows that don't have access to the leaves of the folder hierachy on its own line. Note that this must be your only output, the preseence of any other output could lead to a wrong answer(ie.e any debugging outputs).
 
 Constraints:  
+
 - Q is between 0 and 50
 - M and N are between 0 and 50
 - The shared folder IDs are between 0 and 10,000. No two shared folders or confidential folders share an ID.
@@ -272,9 +274,129 @@ In this case, we have cows with ids 0, 1 and 2.
 
 The folder hierarchy is shown below. SF stands for shared foldeer. CF stands for confidential folder.
 
+```
+   SF1
+   / \
+SF2  CF3
+```
+
+SF1 - Cow 0 has access to SF1 via this folder's membership list
+
+SF2 - Cow 1 has access to SF2 via this folder's membership list. Cow 0 has access to SF2 since it has access to the parent folder SF1.
+
+CF3 - Cow 0, 1 and 2 have access to CF3 via this folder's membership list. Note that Cow 0 doesn't inherit access to this folder via the parent folder.
+
+Since Cow 2 cannot access leaf folder SF2, it should be printed in the output.
 
 
 
+### Solution
+
+```
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+class Folder{
+	int id = 0; 
+	boolean access = false; // true: shared, false: confidential
+	List<Folder> children = new LinkedList<>(); 
+	List<Integer> cows = new LinkedList<>();
+	int in = 0;
+	int out = 0;
+
+	Folder(int id, boolean access){
+		this.id = id;
+		this.access = access;
+		in = 0;
+		out = 0;
+	}
+
+	void appendCow(List<Integer> newCows){
+		cows.addAll(newCows);
+	}
+}
+
+public class Solution {
+    private static Folder findFolder(List<Folder> folders, int id){
+		for(Folder folder: folders)
+			if(folder.id == id)
+				return folder;
+		return null;
+	}
+    
+    private static void traverse(int[] cows, Folder root){
+		if(root.out == 0)
+			for(int i : root.cows)
+				cows[i]++;
+		for(Folder f: root.children){
+			if(f.access)
+				f.appendCow(root.cows);
+			traverse(cows, f);
+		}
+	}
+    
+    public static void main(String args[] ) throws Exception {
+        /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+        Scanner scanner = new Scanner(System.in);
+		List<Folder> folders = new ArrayList<>();
+
+
+		// parse and build folders
+		int Q = scanner.nextInt();
+		int M = scanner.nextInt();
+		int N = scanner.nextInt();
+		while(M-- > 0){
+			Folder f = new Folder(scanner.nextInt(), true);
+			folders.add(f);
+			int K = scanner.nextInt();
+			while(K-- > 0)
+				f.cows.add(scanner.nextInt());
+		}
+		while(N-- > 0){
+			Folder f = new Folder(scanner.nextInt(), false);
+			folders.add(f);
+			int K = scanner.nextInt();
+			while(K-- > 0)
+				f.cows.add(scanner.nextInt());
+		}
+
+		// parse and build trees
+		int G = scanner.nextInt();
+		while(G-- > 0){
+			int U = scanner.nextInt();
+			int V = scanner.nextInt();
+			Folder u = findFolder(folders, U);
+			Folder v = findFolder(folders, V);
+			if(u != null & v != null){
+				u.children.add(v);
+				u.out++;
+				v.in++;
+			}
+		}
+
+		// traverse
+		int numLeaf = 0;
+		int[] cows = new int[Q];
+		for(int i = 0; i < folders.size(); i++){
+			if(folders.get(i).in == 0)
+				traverse(cows, folders.get(i));
+			if(folders.get(i).out == 0)
+				numLeaf++;
+		}
+
+		List<Integer> res = new ArrayList<>();
+		for(int i = 0; i < Q; i++)
+			if(cows[i] < numLeaf)
+				res.add(i);
+
+		for(int i = 0; i < res.size(); i++)
+			System.out.print(res.get(i) + " ");
+	}
+}
+```
 
 
 
