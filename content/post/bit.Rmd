@@ -1,0 +1,58 @@
+---
+title: "Bit Manipulation"
+date: 2018-08-23T21:13:14-05:00
+categories: ["Bit"]
+tags: ["Bit"]
+mathjax: true
+---
+
+
+# C++
+
+- Set x to 0: `x^=x`
+
+- **Negation plus 1 is negative**: `~200 + 1 = -200`
+
+- 0^x = x
+
+- Precedence: Bitwise NOT __~__ is the same as Logical NOT __!__.(3); __<<__ and __>>__  Bitwise left shift and right shift. (7); 3 Bit Operators(__&,^,|__) have very low precedence,even lower than addition(+) and subtraction(-). (10,11,12). Refer to: http://en.cppreference.com/w/cpp/language/operator_precedence
+
+
+- Bitwise NOT __~__ will reverse the __bit sign__ too. Refer to: https://stackoverflow.com/questions/7790233/how-to-clear-the-most-significant-bit
+
+- 构造2的n次方 : $2^n$ == 1 << n
+
+- max uint32_t is `0xFFFFFFFF`; max int32_t is `0x7FFFFFFF`, min int32_t is `-INT_MAX-1`.
+
+- [highbit(x)](#isolate-the-leftmost-1-bit)
+
+- lowbit(x) = `x&-x` (used by [BIT](other-trees.html#binary-index-tree). Proof of isolating the last digit is from: <http://bit.ly/2xxW2og>) or `x&~(x-1)` or `x&(~x+1)`
+
+- clear_lowbit(x) = x & (x-1)
+
+- C++ use arithmetic shift(signed shift): https://en.wikipedia.org/wiki/Arithmetic_shift .\footnote[1]{Java has $>>>$ and $<<<$ for logical shift.}
+
+- get_one_bit(x,i) = `(x & 1<<i) >> i`
+
+- set_one_bit(x,i) = `x | 1<<i`
+
+- clear_one_bit(x,i) = `x & ~(1<<i)`. clear with a mask (like `1111110111111`)
+
+- masks: `~(1 << i)`,`(1<<i)-1` (i `1`s at `least significant bits`),`((1<<i)-1) << (31-i)`( i `1`s at MSB)
+
+- if x is $\mathbb{Z}^+$,`~x == -(x+1)`,so `~8 == -9`
+
+- Gray Code: `n^(n>>1)`
+
+- 构造N个1: `(1<<N) - 1`, eg. to construct 20 `1`s: __builtin_popcount((1<<20)-1) == 20
+
+- Shifting a negative signed value is undefined
+
+- For array/string, the index starts from the left side, which is `front()`. But for integer, the index starts from the right side.
+
+![Bit Layout of INT_MAX, INT_MIN and -1](/img/2147483647.png)
+
+- ISO 9899:1999 6.5.7 Bit-wise shift operators §3
+
+    The `integer promotions` are performed on each of the operands. The type of the result is that of the promoted left operand. If the value of the right operand is negative or is greater than or equal to the width of the promoted left operand, the behavior is **undefined**.
+

@@ -1,0 +1,218 @@
+---
+title: "Dropbox"
+date: 2018-10-09T21:13:14-05:00
+categories: ["Dropbox"]
+tags: ["Dropbox"]
+mathjax: true
+---
+
+# Practice
+
+https://leetcode.com/company/dropbox/
+
+# Dynamic Programming
+
+Given a 2-d array of "sharpness" values. Find a path from the leftmost column to the rightmost column which has the highest minimum sharpness. Output the highest minimum sharpness. Each move can only move to the top right, right or bottom right grid.
+
+Example:
+
+3*3 matrix
+
+```
+5 7 2
+7 5 8
+9 1 5
+```
+
+The path with highest minimum sharpness is 7-->7-->8, because 7 is the highest minimum value in all the paths.
+
+Idea:
+
+Use DP dp[r][c] = min(max(dp[r-1][c-1], dp[r][c-1], dp[r+1][c-1]), grid[r][c])
+
+http://www.1point3acres.com/bbs/thread-311728-1-1.html
+
+
+2017(10-12月) 码农类General 硕士 全职@Dropbox - 网上海投 - 技术电面  | Pass | fresh grad应届毕业生
+就一道题 很快就弄完了
+就是面筋体 highest minimum sharpness
+
+```
+Given a 2-d array of "sharpness" values. Find a path from the 
+leftmost column to the rightmost column which has the 
+highest minimum sharpness.. From 1point 3acres bbs
+Output the highest minimum sharpness. Each move can only 
+move to the top right, right or bottom right grid.
+Example: 3*3 matrix
+5 7 2
+7 5 8
+9 1 5
+The path with highest minimum sharpness is 7-->7-->8, 
+because 7 is the highest minimum value in all the paths.
+Idea: 
+Use DP dp[r][c] = min(max(dp[r-1][c-1], dp[r][c-1], dp[r+1][c-1]),
+                      grid[r][c])
+```
+
+面试的时候数字是double 其他没有任何改动
+
+followup如下:
+```
+1.图片很大读不进内存怎么办
+回答:一列一列地读,把这个dp做成一维的
+2.这个改进有啥问题
+每行都要不断地跳转指针吧,根据locality,这个还是蛮耗时间的
+3.有啥改进吗?
+把按列读改成按行读
+4.你知道这个在数学中的词语叫啥吗?
+transpose
+```
+补充内容 (2017-12-27 06:51):
+对了 小哥让我口头跑了两个test case~
+
+
+Solution:
+
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+#define INT_MIN -2147483648
+
+int find_highest_minimum_sharpness(vector<vector<int>>& m){
+  if(m.empty() or m[0].empty()) return INT_MIN;
+  int R=m.size(), C=m[0].size();
+  for(int j=1;j<C;j++){
+    for(int i=0;i<R;++i){
+      int t=m[i][j-1];
+      if(i-1>=0) t=max(t,m[i-1][j-1]);
+      if(i+1<R) t=max(t,m[i+1][j-1]);
+      m[i][j] = min(t,m[i][j]);
+    }
+  }
+  int r=INT_MIN;
+  for(int i=0;i<R;++i)
+    r=max(r,m[i][C-1]);
+  return r;
+}
+
+
+int main(int argc, char** argv){
+  vector<vector<int>> board={
+    {5,7,2},{7,5,8},{9,1,5}
+  };
+  cout << find_highest_minimum_sharpness(board)==7 << endl;
+  return 0;
+}
+```
+
+http://massivealgorithms.blogspot.com/search/label/Dropbox
+
+http://www.1point3acres.com/bbs/thread-177627-1-1.html
+
+2-d array of "sharpness" values. Fine the path from left to right which has the highest minimum sharpness. 路径必须是从左往右,先有个起始点,然后每次要往右上,正右或右下跳一步.也就是说,路径长度是列数n,假设路径为(i1,1),(i2,2),...,(in,n),路径必须满足每对i_k与i_{k-1}的距离不能大于1.
+```
+.5 .7 .2
+.7 .5 .8
+.9 .1 .5
+```
+
+在这个例子中,理想路径是.7->.7->.8因为这条路径中的最小值.7在所有路径中最大.只需要返回这个值,不需要返回路径.这是道dp问题
+
+follow up:
+如果图片是1million*1million的怎么办,整张图片读不进内存,我答说dp结构可以改成一维的,然后每次只读一列.小哥说每次读一列的第一个字符非常耗时,因为要不断的跳读指针,然后我说可以对这个矩阵转置写到另外一个文件里,然后每次想做这个函数就对这个新文件操作就好了,这样就能按行读.
+
+小哥就问我`怎么转置再存到另外一个文件里`,我说根据内存大小可以多读几列.然后小哥就说还可以再优化,他说这有一个balance,读行输出列,写文件就很耗时,读列输出行,读文件就很耗时(主要问题是 写指针或读指针跳转到下一行 所带来的时间消耗),其实听到这里我就应该有反应了,但当时还是傻傻的想.最后结果是`每次根据内存大小读一个接近正方形的矩形,将他们写到新文件,再读下一块矩形`.这样的话,读写指针跳转次数就最小了.
+
+
+# Duplicate Files - Find all duplicate files by content in your filesystem.
+
+https://www.glassdoor.com/Interview/Find-all-duplicate-files-by-content-in-your-filesystem-QTN_899091.htm
+
+It's actually a software design problem. Your solution needs to be tackle a couple of problems: obtaining a list of all the files in the file system (e.g. via DFS), binning the lists into possible matches, repeat via swappable heuristics until your certainty is 100%. (eg size 1st, md5 2nd, byte stream 3rd).
+
+Get all files via dfs. group files by file size. then compare each file to other files in its group, reading one byte at a time. if one byte is different from rest, remove it from group. files with same byte are in subgroups. read next byte until eof. remove subgroups of size 1 - these files are not duplicates. remaining subgroups consist of duplicate files. Doing MD5 or SHA1 would involve reading large files which is slow, and collisions if file sizes are > 2^256 size for ex if using sha 256-bit.
+
+https://crypto.stackexchange.com/questions/1434/are-there-two-known-strings-which-have-the-same-md5-hash-value
+
+
+同一目录下,有duplicate files,但文件名不一样,内容啥的都一样,然后让找到这些文件吗?
+
+http://www.1point3acres.com/bbs/thread-172769-1-1.html
+
+这题关键不是考你的BFS或者DFS,虽然你需要用BFS或者DFS先把所有文件先找出来.找出来之后怎么除重才是真正他们想考你的地方.
+
+最简单的方法:
+用MD5 hash值做hashmap的key,然后对key相同的文件两两比较(所以MD5有可能会碰撞,所以需要double check)
+这样做的坏处:就算目录里只有少量的duplicated的文件,每个文件都还是需要从头到尾扫描一遍(计算MD5).
+
+改进的办法:
+可以先按照size分组,再按照前1K个bytes作为hashmap的key将文件分组,然后每个文件数不少于2的组按照[1K+1, 2K]这接下来的1K个bytes分组......然后按照这个思路一直分下去.
+这样做的好处:在现实中,一般目录里面大部分的文件都是unique的,只有少量duplicate,在这个逐层分组的过程中,大量的文件都会在前几步的分组里面被分到一个只有它自己的组里,对于这些文件,我们就已经不再需要扫描它后面的部分.
+
+
+http://www.1point3acres.com/bbs/thread-180491-1-1.html
+
+code是他家的duplicate file,一开始我尝试边写代码边说话,他不理我,楼主口语渣,也说不下去,结果后半段完全就是闷头写代码.我在read file时用的bfs,出了点小问题,在work through的时候修改,可能是扣分点
+
+问了我复杂度,md5不能证明两个file一样,我后来说可以再作为filter,比较byte array才行
+
+问我如果file很大怎么办,因为我读file的时候就是1kb的size读取,我回答说所有相同md5的file再拿出来一个一个比较
+
+问我这个1kb的读取是从头好还是从尾好,我说从头好,但是说不出为什么,一开始说从头读速度快,他说`从哪里读速度都一样`,然后他给我解释了,然而我并没听明白他的英语..
+
+
+# Write a counter for hits received in the past 15 minutes.
+
+https://nuttynanaus.wordpress.com/2014/03/09/software-engineer-interview-questions/
+
+http://www.1point3acres.com/bbs/thread-170171-1-1.html
+
+设计两个function,分别是log_hit()和get_hit_number_in_last_5_mins(). 之前在面经上也见过这题,就是要记录一个web被visited的次数以及返回过去5 min内被visited的次数
+
+http://sde.quant365.com/apple.html#rolling-window
+
+# DFS + Trie
+
+第一轮的题是0-9每个数字可以map到几个字母上,就和电话上的numberpad类似,然后给你一个词典,给你一串数字,让你输出所有用词典里的词把整个数字map出来的方法.比如说给你数字234567,给你词典["ADG", "JMP", "JMQ"], 你要输出[["ADG", "JMP"], ["ADG", "JMQ"]]
+
+http://www.1point3acres.com/bbs/thread-180309-1-1.html
+
+
+http://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=141384
+
+
+# Allocation ID
+
+编程题就一道,给一个数N,生成N个id, 用户可以调用allocate()来分配一个id, 用完后调用release()释放id, 这样别的用户可以用.
+一开始给了基于bit的解法,但`allocate的复杂度是O(N), 要求改进,并提示memory不是问题`.
+最后的方法是基于hash的.所有的id生成后放到hash table里,然后从里面取
+
+Dropbox 真是万年题不变啊。 当时我用Tree, 刚好是space有要求
+
+嗯，挺开放的题目，可难可易，取决于那一位面试官的考点在哪儿了
+
+http://www.1point3acres.com/bbs/thread-194896-1-1.html
+
+
+实现两个函数,int allocate()和void release(intid),每调用一次allocate返回的id需要unique,为1到N之间的一个整数.如果release以后,就可以继续被allocate.之前用array+hashmap,达到O(1)时间和O(N)空间.后来被告知空间用得太多,map空间效率低,最后用了bitmap.这题其实和实现文件系统的metadata区域比较类似,不过最后居然是用时间换空间,有点让我诧异.
+
+https://blog.csdn.net/whuwangyi/article/details/43112895
+
+http://massivealgorithms.blogspot.com/2016/08/leetcode-379-design-phone-directory.html
+
+Related OJ:   
+https://leetcode.com/problems/design-phone-directory/
+
+# Game of Life
+
+https://leetcode.com/problems/game-of-life/description/
+
+https://segmentfault.com/a/1190000003819277
+
+http://www.1point3acres.com/bbs/thread-311212-1-1.html
+
+
+
+
