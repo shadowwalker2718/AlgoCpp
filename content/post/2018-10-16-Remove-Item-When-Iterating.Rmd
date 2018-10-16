@@ -1,0 +1,31 @@
+---
+title: "Remove item when iterating"
+author: "Henry Wu"
+date: 2018-10-16T21:13:14-05:00
+categories: ["Uber"]
+tags: ["Uber"]
+mathjax: true
+output: html_document
+---
+
+# CPP
+
+In STL, erase and remove have totally different meanings. Erase means to move/delete items out of the container, but remove means to move the items to the end of the sequential container.
+
+There is a very good graph in: https://en.cppreference.com/w/cpp/container, you can find `remove` in header file `<algorithm>` and `list`, `forward_list` container.
+
+But `erase` exists in all containers.
+
+```
+[cling]$ #include <vector>
+[cling]$ #include <algorithm>
+[cling]$ using namespace std;
+[cling]$ vector<int> vi={1,2,3,3,3,4,5,6};
+[cling]$ remove(vi.begin(), vi.end(), 3);
+[cling]$ vi
+(std::vector<int> &) { 1, 2, 4, 5, 6, 4, 5, 6 }
+```
+
+## Erase-Remove Idiom
+
+To remove items from STL container, 
