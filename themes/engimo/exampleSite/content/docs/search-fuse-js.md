@@ -2,7 +2,7 @@
 date: 2018-07-06T01:00:00+06:00
 lastmod: 2018-07-20T20:00:00+06:00
 title: "Search: Fuse.js"
-authors: ["muniftanjim"]
+authors: ["henrywu"]
 categories:
   - features
 tags:

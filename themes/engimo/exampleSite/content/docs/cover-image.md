@@ -2,7 +2,7 @@
 date: 2017-09-30T14:00:00+06:00
 lastmod: 2018-06-04T23:00:00+06:00
 title: Cover Image
-authors: ["muniftanjim"]
+authors: ["henrywu"]
 categories:
   - features
 slug: cover-image

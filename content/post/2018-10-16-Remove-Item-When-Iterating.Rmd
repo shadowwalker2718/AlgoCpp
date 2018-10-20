@@ -29,3 +29,10 @@ But `erase` exists in all containers.
 ## Erase-Remove Idiom
 
 To remove items from STL container, 
+
+
+
+# Python
+
+https://www.quora.com/In-Python-why-cant-you-remove-elements-from-a-list-with-a-for-loop-but-you-can-with-a-while-loop
+

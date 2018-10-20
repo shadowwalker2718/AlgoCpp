@@ -1,7 +1,7 @@
 ---
 date: 2018-02-27T21:00:00+06:00
 title: Emoji Support
-authors: ["muniftanjim"]
+authors: ["henrywu"]
 categories:
   - features
 tags:

@@ -1,0 +1,134 @@
+---
+title: "140. Word Break II"
+date: 2018-10-20T12:34:32-04:00
+categories: ["140","Word","Break","II"]
+tags: ["140","Word","Break","II","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 140. Word Break II
+
+https://leetcode.com/problems/Word-Break-II
+
+----
+
+## Solution(s)
+
+### C++
+
+```
+class Solution { //77%
+public:
+  unordered_map<string, vector<string>> m; //cache
+  vector<string> rec(string& s, unordered_set<string>& dict) {
+    if(m.count(s)) return m[s]; //take from cache directly
+    vector<string> result;
+    if(dict.count(s)) //the whole string is a word
+      result.push_back(s);
+    for(int i=1;i<s.size();++i){
+      string second=s.substr(i); // second part of string
+      if(dict.count(second)){
+        string first=s.substr(0,i); // first part of string
+        auto t=rec(first, dict);
+        vector<string> prev=combine(second, t);
+        result.insert(result.end(), prev.begin(), prev.end());// merge two vectors
+      }
+    }
+    return m[s]=result; //memoization not memorization
+  }
+  vector<string> combine(string& word, vector<string>& prev){
+    for(int i=0;i<prev.size();++i) prev[i]+=" "+word;
+    return prev;
+  }
+public:
+  vector<string> wordBreak(string s, vector<string>& wordDict) {
+    unordered_set<string> st(wordDict.begin(), wordDict.end());
+    return rec(s, st);
+  }
+};
+```
+
+
+### Java
+
+```
+public class Solution { //21%
+    public List<String> wordBreak(String s, List<String> dictx) {
+        Set<String> dict = new HashSet(dictx);
+        List<String> res = new ArrayList<String>();
+        int n = s.length();
+        boolean[] canBreak = new boolean[n+1];
+        canBreak[n] = true;
+        for (int i = n - 1; i >= 0; --i) {
+            for (int j = i; j < n; ++j) {
+                if (dict.contains(s.substring(i,j+1)) && canBreak[j+1]) {
+                    canBreak[i] = true;
+                    break;
+                }
+            }
+        }
+        if (canBreak[0] == false) return res;
+        wordBreakRe(s, dict, "", 0, res);
+        return res;
+    }
+    public void wordBreakRe(String s, Set<String> dict, String path, 
+      int start, List<String> res) {
+        if (start == s.length()) {
+            res.add(path);
+            return;
+        }
+        if (path.length() != 0) path = path + " ";
+        for (int i = start; i < s.length(); ++i) {
+            String word = s.substring(start, i + 1);
+            if (dict.contains(word) == false) continue;
+            wordBreakRe(s, dict, path + word, i + 1, res);
+        }
+    }
+}
+```
+
+### Python
+
+### Go
+
+### Javascript
+
+```
+var wordBreak = function(s, wordDict) { //80%
+    wordDict = new Set(wordDict);
+    var result = [], solutions = [], len = s.length, possible = new Array(len+1);
+    possible.fill(true);
+    rec(0, s, wordDict, result, solutions, possible);
+    return solutions;
+};
+function rec(start, s, wordDict, result, solutions, possible) {
+    if(start === s.length) {
+        solutions.push(result.join(' '))
+        return
+    }
+    // loop through string from i to s.length
+    for(var i = start; i < s.length; i++) {
+        var piece = s.substring(start, i+1);
+        // possible is to mark step whether i+1 to s.length have any possible words
+        if(wordDict.has(piece) && possible[i+1]) {
+        // eliminate unnecessary search
+            result.push(piece);
+            var beforeChange = solutions.length;
+            rec(i + 1, s, wordDict, result, solutions, possible);
+            if(solutions.length === beforeChange)
+                possible[i+1] = false;
+            result.pop();
+        }
+    }
+}
+```
+
+### Scala
+
+## Time and Space Complexity
+
+Time complexity : $O()$  
+Space complexity: $O()$
+

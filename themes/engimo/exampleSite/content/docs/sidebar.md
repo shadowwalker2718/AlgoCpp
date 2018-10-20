@@ -2,7 +2,7 @@
 date: 2018-02-07T19:15:00+06:00
 lastmod: 2018-03-29T05:20:00+06:00
 title: Sidebar
-authors: ["muniftanjim"]
+authors: ["henrywu"]
 categories:
   - features
 tags:

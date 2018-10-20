@@ -2,7 +2,7 @@
 date: 2017-09-26T08:00:00+06:00
 lastmod: 2017-10-11T18:00:00+06:00
 title: Opengraph Support
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:

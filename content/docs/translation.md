@@ -1,7 +1,7 @@
 ---
 date: 2017-09-27T14:00:00+06:00
 title: Translation Support
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:

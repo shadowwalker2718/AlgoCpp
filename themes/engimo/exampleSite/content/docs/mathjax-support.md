@@ -1,7 +1,7 @@
 ---
 date: 2018-02-27T18:00:00+06:00
 title: MathJax Support
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:

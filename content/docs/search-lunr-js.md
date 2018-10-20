@@ -1,7 +1,7 @@
 ---
 date: 2018-07-05T20:30:00+06:00
 title: "Search: Lunr.js"
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:

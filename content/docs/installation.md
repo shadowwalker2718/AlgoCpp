@@ -2,7 +2,7 @@
 date: 2017-09-25T02:00:00+06:00
 lastmod: 2018-02-08T15:00:00+06:00
 title: Installation Guide
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - Tutorial
 slug: installation

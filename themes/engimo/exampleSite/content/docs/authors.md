@@ -2,7 +2,7 @@
 date: 2017-09-26T06:00:00+06:00
 lastmod: 2017-10-11T17:30:00+06:00
 title: Authors Setup Guide
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:
@@ -27,9 +27,9 @@ For adding an author to your site:
 
 Now, add information about the author using the structure below:
 
-**/data/authors/muniftanjim.toml**
+**/data/authors/henrywu.toml**
 
-{{< file "data/authors/muniftanjim.toml" >}}
+{{< file "data/authors/henrywu.toml" >}}
 
 _You can use either the `[email]` fields or the `[social.email]` field. You don't need to fill them both. However, it is encouraged to use `[email]` instead of `[social.email]`._
 
@@ -39,7 +39,7 @@ For adding authors to your content include the following option in your content'
 
 ```yaml
 ---
-authors: ["muniftanjim"]
+authors: ["henrywu"]
 ---
 ```
 

@@ -1,0 +1,144 @@
+---
+title: "139. Word Break"
+authors: ["henrywu"]
+date: 2018-10-19T10:58:59-04:00
+categories: ["139","Word","Break"]
+tags: ["139","Word","Break","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 139. Word Break
+
+Given a string s and a dictionary of words dict, determine if s can be segmented into a space-separated sequence of one or more dictionary words.
+
+For example, given
+
+s = "leetcode",  
+dict = ["leet", "code"].
+
+Return true because "leetcode" can be segmented as "leet code".
+
+https://leetcode.com/problems/Word-Break
+
+----
+
+## Solution(s)
+
+### CPP
+
+```
+class Solution {
+    vector<char> dp;
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        set<string> ss(wordDict.begin(), wordDict.end());
+        dp.resize(s.length()+1,-1);
+        dp[0]=1;
+        return getdp(s,ss,s.size());
+    }
+    
+    bool getdp(string& s, set<string>& ss, int len){
+        if(dp[len]!=-1) return dp[len]==1;
+        for(int j=len-1;j>=0;j--){
+            if (ss.count(s.substr(j,len-j))){
+                if(getdp(s,ss,j)){
+                    return dp[len]=1;
+                }
+            }
+        }
+        return dp[len]=0;
+    }
+};
+```
+
+```python
+class Solution {
+    vector<char> dp; // from i to size()-1, if it is breakable
+public:
+    bool wordBreak(string s, vector<string>& ws) {
+        set<string> ss;
+        for_each(ws.begin(), ws.end(), [&ss](string& t){ss.insert(t);});
+        dp.resize(s.size(), -1);
+        return rec(s, 0, ss);
+    }
+    bool rec(string& s, int h, set<string>& ss){// from h to s.size()-1
+        if (dp[h]!=-1) return dp[h]==1;
+        for(int i=h;i<s.size();i++){
+            string t=s.substr(h, i-h+1);
+            if(ss.count(t))
+                if(i==s.size()-1 || rec(s,i+1,ss)) return dp[h]=true;
+        }
+        return dp[h]=false;
+    }
+};
+```
+
+### Python
+
+```
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        dp = [True]+[False]*len(s)
+        # starting from 0, string with len=i is breakable?
+        for i in range(1,len(s)+1):
+            for j in range(i):
+                if s[j:i] in wordDict and dp[j]:
+                    dp[i]=True
+                    break
+        return dp[len(s)]
+```
+
+### Javascript
+
+```
+/* @param {string} s
+ * @param {string[]} wordDict
+ * @return {boolean} */
+var wordBreak = function(s, wordDict) {
+    const wd = new Set(wordDict);
+    let hasFound = [true],len = s.length,i,j;
+    for (i = 1; i <= len; i++) {
+        for (j = 0; j < i; j++) {
+            if (hasFound[j] && wd.has(s.substring(j, i))) {
+                hasFound[i] = true;
+                break;
+            }
+        }
+    }
+    return hasFound[len] === true;
+};
+```
+
+Ref:  
+https://rapd.wordpress.com/2007/07/12/javascript-substr-vs-substring/  
+https://stackoverflow.com/questions/2243824/what-is-the-difference-between-string-slice-and-string-substring
+
+### Java
+
+```
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int len=s.length();
+        Set<String> ss = new HashSet<String>(wordDict);
+        boolean[] dp = new boolean[len+1];
+        dp[0]=true;
+        for(int i=0;i<len;i++){
+            for(int j=0;j<=i;j++){
+                if(dp[j] && ss.contains(s.substring(j,i+1))){
+                    dp[i+1]=true;
+                    break;
+                }
+            }
+        }
+        return dp[len];
+    }
+}
+```
+
+## Time and Space Complexity
+
+Time complexity : $O(N^2)$  
+Space complexity: $O(N)$
+

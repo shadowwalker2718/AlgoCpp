@@ -2,7 +2,7 @@
 date: 2018-03-29T09:00:00+06:00
 lastmod: 2018-06-29T19:30:00+06:00
 title: Comments Support
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - features
 tags:

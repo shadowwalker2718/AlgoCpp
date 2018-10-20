@@ -1,0 +1,19 @@
+---
+title: "895. Maximum Frequency Stack"
+date: 2018-10-18T21:11:33-04:00
+categories: ["895","Maximum","Frequency","Stack"]
+tags: ["895","Maximum","Frequency","Stack","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 895. Maximum Frequency Stack
+
+
+----
+
+## Solution(s)
+
+## Time and Space Complexity
+

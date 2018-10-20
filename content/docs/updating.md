@@ -2,7 +2,7 @@
 date: 2017-09-25T06:00:00+06:00
 lastmod: 2018-02-08T14:45:00+06:00
 title: Updating Guide
-authors: ["muniftanjim","achary"]
+authors: ["henrywu","achary"]
 categories:
   - Tutorial
 slug: updating
@@ -17,7 +17,7 @@ Just replace the `themes/engimo` folder with the latest version of Engimo clone,
 
 ```sh
 rm -rf themes/engimo
-git clone --depth 1 https://github.com/MunifTanjim/engimo themes/engimo
+git clone --depth 1 https://github.com/henrywu/engimo themes/engimo
 ```
 
 Then, commit the changes:
