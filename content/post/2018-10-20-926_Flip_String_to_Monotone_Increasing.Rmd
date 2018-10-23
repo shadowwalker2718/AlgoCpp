@@ -1,0 +1,36 @@
+---
+title: "926. Flip String to Monotone Increasing"
+authors: ["henrywu"]
+date: 2018-10-20T23:23:39-04:00
+categories: ["926","Flip","String","to","Monotone","Increasing"]
+tags: ["926","Flip","String","to","Monotone","Increasing","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 926. Flip String to Monotone Increasing
+
+https://leetcode.com/problems/Flip-String-to-Monotone-Increasing
+
+----
+
+## Solution(s)
+
+### C++
+
+### Java
+
+### Python
+
+### Go
+
+### Javascript
+
+### Scala
+
+## Time and Space Complexity
+
+Time complexity : $O()$  
+Space complexity: $O()$
+

@@ -1,0 +1,36 @@
+---
+title: "925. Long Pressed Name"
+authors: ["henrywu"]
+date: 2018-10-20T23:24:06-04:00
+categories: ["925","Long","Pressed","Name"]
+tags: ["925","Long","Pressed","Name","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 925. Long Pressed Name
+
+https://leetcode.com/problems/Long-Pressed-Name
+
+----
+
+## Solution(s)
+
+### C++
+
+### Java
+
+### Python
+
+### Go
+
+### Javascript
+
+### Scala
+
+## Time and Space Complexity
+
+Time complexity : $O()$  
+Space complexity: $O()$
+
