@@ -173,6 +173,45 @@ http://www.1point3acres.com/bbs/thread-170171-1-1.html
 
 http://sde.quant365.com/apple.html#rolling-window
 
+https://leetcode.com/problems/design-hit-counter
+
+```
+class HitCounter {
+    vector<int> v;
+    vector<int> h;
+public:
+    /** Initialize your data structure here. */
+    HitCounter() {
+        v.resize(300, 0);
+        h=v;
+    }
+    
+    /** Record a hit.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    void hit(int timestamp) {
+        int i=timestamp%v.size();
+        if(v[i]==timestamp)
+            h[i]++;
+        else{
+            h[i]=1;
+            v[i] = timestamp;
+        }
+        
+    }
+    
+    /** Return the number of hits in the past 5 minutes.
+        @param timestamp - The current timestamp (in seconds granularity). */
+    int getHits(int timestamp) {
+        int r=0;
+        for(int i=0;i<v.size();i++){
+            if(v[i]!=0 and timestamp - v[i]<300)
+                r+=h[i];
+        }
+        return r;
+    }
+};
+```
+
 # DFS + Trie
 
 第一轮的题是0-9每个数字可以map到几个字母上,就和电话上的numberpad类似,然后给你一个词典,给你一串数字,让你输出所有用词典里的词把整个数字map出来的方法.比如说给你数字234567,给你词典["ADG", "JMP", "JMQ"], 你要输出[["ADG", "JMP"], ["ADG", "JMQ"]]
@@ -204,6 +243,43 @@ http://massivealgorithms.blogspot.com/2016/08/leetcode-379-design-phone-director
 
 Related OJ:   
 https://leetcode.com/problems/design-phone-directory/
+
+https://www.reddit.com/r/algorithms/comments/8685em/id_allocator_implementation_in_python/  
+http://dhruvbird.blogspot.com/2011/04/segment-trees-and-bitmaps.html
+
+Bitmaps are used all the time to keep track of free lists since they are a very compact way of keeping track of true/false information. They are used in the ext2/ext3 file system to keep track of free inode and data blocks, in the bitmapped_allocator to keep track of free memory blocks, and in many many other places.
+
+However, in almost all places, a linear search technique is used to get the first set (or unset) bit. This works very well for small sets of data, but say you have 40 million items that you want to keep track of, you'll land up linear searching 40x106/8/1024/1024 = 4.7 MB of data, which is more than the cache size of most CPUs these days. What this effectively means is that you will land up filling up the CPU cache with the bitmaps, leaving very ittle space for your application's real data.
+
+This is obviously bad news and we should do something to fix it.
+
+Welcome Trees!!
+
+We take some inspiration from Segment Trees and use a hierarchial structure to store range data that will help us divide-and-conquor the free list in a zippy fashion.
+
+Let's assume that each byte on our fictitious machine can hold just 2 bits. A bit 0 means that the object that that bit represents is free, whereas a bit 1 means that the object that that bit represents is taken (or allocated).
+
+
+
+The root node gives us information about the complete range (all the 8 bits in the leaves). The nodes at the 1st level give us information about 4 bits each, and each of the leaf nodes give us information about 2 bits each (this is a base case since each byte on our machine can hold just 2 bits).
+
+Now, finding a free node is just a simple tree traversal down a path that has 0 in one of the bit positions. While coming up, we set the 0 bits in each level (that we followed down) to a 1 bit ONLY if all the children of that 0 bit are all 1. We unconditionally set the 0 bit in the leaf node to 1 and go up the tree.
+
+
+
+Hence, you can see that we have converted a O(n) operation to a O(lg n) operation by increasing the space requirements to 2x the original. Even though the space requirement is 2x the original, the tree based algorithm is much better not just from a time complexity perspective, but is also much more cache friendly. You should expect to have only the first 2 levels entirely in the cache. The remaining levels will come and go as necessary. This is the exact reason why B-Trees are better as an on-disk indexing and retrieval structure.
+
+On a 32-bit machine, we need just a little over 5 levels of the tree to store 40 million bits (34 million bits can be stored completely in just 5 levels).
+
+Update: You can achieve the same runtime complexity of O(lg n) and NO extra space overhead (compared to the linear scan solution) by using a Fenwick Tree instead of a Segment Tree.
+
+https://gcc.gnu.org/onlinedocs/libstdc++/manual/bitmap_allocator.html
+
+
+https://eatplayhate.me/2010/09/04/memory-management-from-the-ground-up-2-foundations/
+
+https://hackernoon.com/practical-data-structures-for-frontend-applications-when-to-use-segment-trees-9c7cdb7c2819
+
 
 # Game of Life
 

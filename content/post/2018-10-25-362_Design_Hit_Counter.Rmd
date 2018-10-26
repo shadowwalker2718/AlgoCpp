@@ -1,0 +1,38 @@
+---
+title: "362. Design Hit Counter"
+authors: ["henrywu"]
+date: 2018-10-25T23:57:42-04:00
+categories: ["362","Design","Hit","Counter"]
+tags: ["362","Design","Hit","Counter","leetcode"]
+mathjax: true
+---
+
+----
+
+- Problem: 362. Design Hit Counter
+
+https://leetcode.com/problems/Design-Hit-Counter
+
+----
+
+## Solution(s)
+
+### C++
+
+### Java
+
+### Python
+
+### Go
+
+### Javascript
+
+### Scala
+
+### Swift
+
+## Time and Space Complexity
+
+Time complexity : $O()$  
+Space complexity: $O()$
+
